@@ -1,4 +1,7 @@
+import json
+import os
 import sys
+
 from quiz import Quiz
 
 def get_default_quizzes():
@@ -119,3 +122,53 @@ def show_quiz_list(quiz_list):
 
     for idx, quiz in enumerate(quiz_list, 1):
         print(f"[{idx}] {quiz.question}")
+
+        STATE_FILE = "state.json"
+
+
+def load_data():
+    """state.json 파일에서 퀴즈와 최고 점수를 불러옵니다."""
+    # 파일이 존재하지 않는 경우 기본값 반환
+    if not os.path.exists(STATE_FILE):
+        return None, 0
+
+    try:
+        with open(STATE_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        # JSON 데이터를 Quiz 객체 리스트로 변환
+        quizzes = []
+        for q in data.get("quizzes", []):
+            quiz = Quiz(q["question"], q["choices"], q["answer"])
+            quizzes.append(quiz)
+
+        best_score = data.get("best_score", 0)
+        return quizzes, best_score
+
+    except (json.JSONDecodeError, KeyError, Exception):
+        # 파일이 손상되었거나 읽을 수 없는 경우
+        print("\n! 데이터 파일(state.json)이 손상되어 초기 데이터로 복구합니다.")
+        return None, 0
+
+
+def save_data(quiz_list, best_score):
+    """현재 퀴즈 목록과 최고 점수를 state.json 파일에 저장합니다."""
+    # Quiz 객체들을 파이썬 딕셔너리 형태로 변환
+    quiz_data = []
+    for q in quiz_list:
+        quiz_data.append({
+            "question": q.question,
+            "choices": q.choices,
+            "answer": q.answer
+        })
+
+    data = {
+        "quizzes": quiz_data,
+        "best_score": best_score
+    }
+
+    try:
+        with open(STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"\n! 파일 저장 중 오류가 발생했습니다: {e}")
