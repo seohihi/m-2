@@ -79,30 +79,45 @@ class QuizGame:
             self.save_data()
 
     def add_quiz(self):
-        """퀴즈 추가 기능 실행"""
+        """퀴즈 추가 기능 실행 (취소/뒤로가기 기능 포함)"""
         print("\n--- 새로운 퀴즈 추가 ---")
+        print("(※ 작성 중 언제든지 'q'를 입력하면 메뉴로 돌아갑니다.)\n")
+
+        # 1. 문제 입력
         question = input("문제를 입력하세요: ").strip()
+        if question.lower() == 'q':
+            print("↩ 퀴즈 추가를 취소하고 메뉴로 돌아갑니다.")
+            return
         if not question:
             print("! 문제는 비어있을 수 없습니다.")
             return
 
+        # 2. 선택지 4개 입력
         choices = []
         for i in range(1, 5):
             choice = input(f"선택지 {i}: ").strip()
+            if choice.lower() == 'q':
+                print("↩ 퀴즈 추가를 취소하고 메뉴로 돌아갑니다.")
+                return
             if not choice:
                 print("! 선택지는 비어있을 수 없습니다.")
                 return
             choices.append(choice)
 
+        # 3. 정답 번호 입력
         answer_input = input("정답 번호 (1-4): ").strip()
+        if answer_input.lower() == 'q':
+            print("↩ 퀴즈 추가를 취소하고 메뉴로 돌아갑니다.")
+            return
         if not answer_input.isdigit() or not (1 <= int(answer_input) <= 4):
             print("! 1~4 사이의 숫자를 입력해야 합니다.")
             return
 
+        # 4. 저장 처리
         self.quizzes.append(Quiz(question, choices, int(answer_input)))
         self.save_data()
         print("✔ 퀴즈가 성공적으로 저장되었습니다!")
-
+        
     def show_list(self):
         """퀴즈 목록 보기"""
         print(f"\n--- 등록된 퀴즈 목록 (총 {len(self.quizzes)}개) ---")
