@@ -1,5 +1,5 @@
 class Quiz:
-    """퀴즈 1개의 문제, 선택지, 정답을 관리하는 클래스입니다."""[cite: 1]
+    """퀴즈 1개의 문제, 선택지, 정답을 관리하는 클래스입니다."""
 
     def __init__(self, question, choices, answer):
         # self.question: 문제 텍스트를 저장합니다.
