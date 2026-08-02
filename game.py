@@ -7,7 +7,7 @@ STATE_FILE = "state.json"
 
 
 class QuizGame:
-    """게임 전체 흐름과 데이터(퀴즈 목록, 최고 점수)를 관리하는 클래스입니다."""[cite: 1]
+    """게임 전체 흐름과 데이터(퀴즈 목록, 최고 점수)를 관리하는 클래스입니다."""
 
     def __init__(self):
         self.quizzes = []
@@ -15,7 +15,7 @@ class QuizGame:
         self.load_data()
 
     def get_default_quizzes(self):
-        """기본 TMI 상식 퀴즈 5개 생성"""[cite: 1]
+        """기본 TMI 상식 퀴즈 5개 생성"""
         return [
             Quiz("바나나는 사실 나무가 아니라 풀이다?", ["O (풀이다)", "X (나무다)", "외계식물이다", "버섯류다"], 1),
             Quiz("딸기는 과일이 아니라 채소(채과류)로 분류된다?", ["O (채소다)", "X (과일이다)", "견과류다", "곡류다"], 1),
@@ -25,7 +25,7 @@ class QuizGame:
         ]
 
     def load_data(self):
-        """state.json 파일에서 데이터를 불러옵니다."""[cite: 1]
+        """state.json 파일에서 데이터를 불러옵니다."""
         if not os.path.exists(STATE_FILE):
             self.quizzes = self.get_default_quizzes()
             return
@@ -40,12 +40,12 @@ class QuizGame:
             self.best_score = data.get("best_score", 0)
 
         except Exception:
-            print("\n! 파일이 손상되어 기본 데이터로 초기화합니다.")[cite: 1]
+            print("\n! 파일이 손상되어 기본 데이터로 초기화합니다.")
             self.quizzes = self.get_default_quizzes()
             self.best_score = 0
 
     def save_data(self):
-        """state.json 파일에 저장합니다."""[cite: 1]
+        """state.json 파일에 저장합니다."""
         quiz_data = [{"question": q.question, "choices": q.choices, "answer": q.answer} for q in self.quizzes]
         data = {"quizzes": quiz_data, "best_score": self.best_score}
         
@@ -56,7 +56,7 @@ class QuizGame:
             print(f"\n! 저장 중 오류 발생: {e}")
 
     def play(self):
-        """퀴즈 풀기 기능 실행"""[cite: 1]
+        """퀴즈 풀기 기능 실행"""
         if not self.quizzes:
             print("\n! 풀 수 있는 퀴즈가 없습니다.")
             return
@@ -79,7 +79,7 @@ class QuizGame:
             self.save_data()
 
     def add_quiz(self):
-        """퀴즈 추가 기능 실행"""[cite: 1]
+        """퀴즈 추가 기능 실행"""
         print("\n--- 새로운 퀴즈 추가 ---")
         question = input("문제를 입력하세요: ").strip()
         if not question:
@@ -104,11 +104,11 @@ class QuizGame:
         print("✔ 퀴즈가 성공적으로 저장되었습니다!")
 
     def show_list(self):
-        """퀴즈 목록 보기"""[cite: 1]
+        """퀴즈 목록 보기"""
         print(f"\n--- 등록된 퀴즈 목록 (총 {len(self.quizzes)}개) ---")
         for idx, quiz in enumerate(self.quizzes, 1):
             print(f"[{idx}] {quiz.question}")
 
     def show_best_score(self):
-        """최고 점수 확인"""[cite: 1]
+        """최고 점수 확인"""
         print(f"\n🏆 현재 최고 점수: {self.best_score}점")

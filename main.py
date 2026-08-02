@@ -1,7 +1,6 @@
 import sys
 from game import QuizGame
 
-
 def main():
     game = QuizGame()
 
@@ -38,7 +37,6 @@ def main():
             print("\n\n! 프로그램이 중단되었습니다. 안전하게 종료합니다.")
             game.save_data()
             sys.exit(0)
-
 
 if __name__ == "__main__":
     main()
