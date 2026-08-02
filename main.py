@@ -78,3 +78,44 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+def add_quiz_flow(quiz_list):
+    """새로운 퀴즈를 직접 등록하는 기능입니다."""
+    print("\n--- 새로운 퀴즈 추가 ---")
+    question = input("문제를 입력하세요: ").strip()
+    
+    # 빈 입력 방지 예외 처리
+    if not question:
+        print("! 문제는 비어 있을 수 없습니다.")
+        return
+
+    choices = []
+    # 선택지 4개 받아오기
+    for i in range(1, 5):
+        choice = input(f"선택지 {i}: ").strip()
+        if not choice:
+            print("! 선택지는 비어 있을 수 없습니다.")
+            return
+        choices.append(choice)
+
+    # 정답 번호 입력받기 (1~4 범위 검수)
+    answer_input = input("정답 번호 (1-4): ").strip()
+    if not answer_input.isdigit() or not (1 <= int(answer_input) <= 4):
+        print("! 잘못된 입력입니다. 1~4 사이의 숫자를 입력하세요.")
+        return
+
+    # Quiz 객체로 만들어서 목록에 추가
+    new_quiz = Quiz(question, choices, int(answer_input))
+    quiz_list.append(new_quiz)
+    print("✔ 퀴즈가 성공적으로 추가되었습니다!")
+
+
+def show_quiz_list(quiz_list):
+    """등록되어 있는 전체 퀴즈 목록을 보여줍니다."""
+    print(f"\n--- 등록된 퀴즈 목록 (총 {len(quiz_list)}개) ---")
+    if not quiz_list:
+        print("등록된 퀴즈가 없습니다.")
+        return
+
+    for idx, quiz in enumerate(quiz_list, 1):
+        print(f"[{idx}] {quiz.question}")
